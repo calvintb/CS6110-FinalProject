@@ -1,14 +1,18 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from Intersection import Intersection
-from Road import Road
-import math
+
 
 class Car(ABC):
     __slots__ = 'road_memory'
 
-    def __init__(self):
+    def __init__(self, start:Intersection, end: Intersection):
         self.road_memory: dict[Road, float] = {}
+        self.start = start
+        self.end = end
+        self.path = None
+
+    def setPath(self, intersections:list[Intersection]):
+        self.path = intersections
 
     @abstractmethod
     def take_action(self, intersection: Intersection) -> Road:
