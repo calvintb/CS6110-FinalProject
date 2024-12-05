@@ -1,4 +1,9 @@
-class Destination:
+from Intersection import Intersection
+
+class Destination(Intersection):
     def __init__(self, label=None):
-        self.label = label
-        self.roads = []
+        super().__init__(label)
+
+
+    def __str__(self):
+        return f"Destination({self.label})"
