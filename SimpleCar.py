@@ -1,31 +1,12 @@
 from __future__ import annotations
+import random
 from Car import Car
 from Intersection import Intersection
-from Road import Road
-
+from Dijkstra import find_all_paths
 
 class SimpleCar(Car):
+    def __init__(self, start: Intersection, end: Intersection):
+        super().__init__(start, end)
 
-    def __init__(self):
-        super().__init__()
-
-    def take_action(self, intersection: Intersection) -> Road:
-        # Example: simple car randomly selects a road
-
-        import random
-
-        road = random.choice(intersection.get_connecting_roads())
-
-        road.increment_traffic()  # Car chooses this road, so we increment traffic
-
-        return road
-
-    def learn(self, roads: list[Road]):
-        # SimpleCar doesn't learn, it just takes random actions
-
-        pass
-
-    def is_satisfied(self) -> bool:
-        # SimpleCar might be satisfied after a fixed number of steps or upon reaching a goal
-
-        return False  # Example assumption
+    def get_next_intersection(self) -> Intersection:
+        return random.choice(find_all_paths(self.current, self.end))[1]
