@@ -51,7 +51,7 @@ def find_shortest_path(start: Intersection, end: Intersection):
     """
     Considers the length of each path
     """
-    return __dijkstra_find_path(start, end, weight_function=lambda road: road.length)
+    return __dijkstra_find_path(start, end, weight_function=lambda road: 1)
 
 def find_cheapest_path(start: Intersection, end: Intersection):
     """
@@ -63,7 +63,7 @@ def find_shortest_time_path(start: Intersection, end: Intersection):
     """
     Looks for the fastest path
     """
-    return __dijkstra_find_path(start, end, weight_function=lambda road: road.length / road.get_speed())
+    return __dijkstra_find_path(start, end, weight_function=lambda road: 1 / road.get_speed())
 
 def find_highest_speed_limit_path(start: Intersection, end: Intersection):
     """

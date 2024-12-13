@@ -12,7 +12,7 @@ class Road:
         The more cars on the road, the slower the speed, with a minimum speed cap.
         """
         congestion_factor = .1 # Speed reduction per car
-        min_speed = 10  # Minimum speed limit, even under heavy traffic
+        min_speed = 2  # Minimum speed limit, even under heavy traffic
         adjusted_speed = max(self.speed_limit - self.traffic_count * congestion_factor, min_speed)
         return adjusted_speed
 

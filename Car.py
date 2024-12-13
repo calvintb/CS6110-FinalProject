@@ -57,14 +57,15 @@ class Car(ABC):
     def is_at_end(self):
         return self.current is self.end
 
-    def time_to_travel_path(self):
-        return self.time_to_travel_potential_path(self.path)
-
-    def time_to_travel_potential_path(self, path: list[Intersection]):
+    def time_to_travel_path(self, path=None) -> float:
+        if path is None:
+            path = self.path
         time = 0
         for i in range(1, len(path)):
-            time += 100 / path[i-1].get_connecting_road(path[i]).get_speed()
+            time += 3600 / path[i - 1].get_connecting_road(path[i]).get_speed()
         return time
+
+
 
     def __str__(self):
         return f"Car({self.id})"

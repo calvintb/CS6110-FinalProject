@@ -3,6 +3,5 @@ from Map import Map
 
 if __name__ == "__main__":
     my_map = Map()
-    my_map.draw()
     my_map.simulate()
     my_map.draw()

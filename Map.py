@@ -1,5 +1,4 @@
 from __future__ import annotations
-import random
 import matplotlib.pyplot as plt
 import networkx as nx
 
@@ -8,7 +7,6 @@ from Intersection import Intersection
 from Road import Road
 
 from DijkstraCar import DijkstraCar, PathType
-from SimpleCar import SimpleCar
 from AgentCar import AgentCar
 
 
@@ -27,46 +25,50 @@ class Map:
         if "cars" in kwargs:
             self.cars: list[Car] = kwargs["cars"]
         if len(self.roads) == 0 or len(self.intersections) == 0 or len(self.cars) == 0:
-            print("Creating default map")
-            self.__create_default_map()
+            self.__create_complex_map()
     
     def __create_complex_map(self):
-        # Create intersections
         A = Intersection(label="A")
         B = Intersection(label="B")
         C = Intersection(label="C")
         D = Intersection(label="D")
         E = Intersection(label="E")
         F = Intersection(label="F")
+        G = Intersection(label="G")
+        H = Intersection(label="H")
 
         # Create roads
-        AB = Road(speed_limit=50, length=10)
-        AF = Road(speed_limit=5, length=45)
-        AC = Road(speed_limit=40, length=15)
-        BD = Road(speed_limit=55, length=12)
-        CD = Road(speed_limit=35, length=10)
-        CE = Road(speed_limit=60, length=20)
-        DF = Road(speed_limit=50, length=18)
-        EF = Road(speed_limit=45, length=22)
+        AB = Road(speed_limit=15, label="AB")
+        AC = Road(speed_limit=40, label="AC")
+        AD = Road(speed_limit=40, label="AD")
+        BE = Road(speed_limit=30, label="BE")
+        BF = Road(speed_limit=55, label="BF")
+        BG = Road(speed_limit=55, label="BG")
+        CE = Road(speed_limit=35, label="CE")
+        CF = Road(speed_limit=60, label="CF")
+        CG = Road(speed_limit=50, label="CG")
+        DE = Road(speed_limit=50, label="DE")
+        DF = Road(speed_limit=50, label="DF")
+        DG = Road(speed_limit=50, label="DG")
+        EH = Road(speed_limit=45, label="EH")
+        FH = Road(speed_limit=45, label="FH")
+        GH = Road(speed_limit=45, label="GH")
 
         # Add roads to intersections
-        A.add_road((AB, B), (AC, C))
-        B.add_road((AB, A), (BD, D))
-        C.add_road((AC, A), (CD, D), (CE, E))
-        D.add_road((BD, B), (CD, C), (DF, F))
-        E.add_road((CE, C), (EF, F))
-        F.add_road((DF, D), (EF, E))
+        A.add_road((AB, B), (AC, C), (AD, D))
+        B.add_road((AB, A), (BE, E), (BF, F), (BG, G))
+        C.add_road((AC, A), (CE, E), (CF, F), (CG, G))
+        D.add_road((AD, A), (DE, E), (DF, F), (DG, G))
+        E.add_road((BE, B), (CE, C), (DE, D), (EH, H))
+        F.add_road((BF, B), (CF, C), (DF, D), (FH, H))
+        G.add_road((BG, B), (CG, C), (DG, D), (GH, H))
+        H.add_road((EH, E), (FH, F), (GH, G))
 
-        # Set up map
-        self.intersections = [A, B, C, D, E, F]
-        self.roads = [AB, AC, BD, CD, CE, DF, EF, AF]
-        path_types = list(PathType) 
-        for i in range(35):
-            start = random.choice(self.intersections)
-            end = random.choice([i for i in self.intersections if i != start])
-            path_type = random.choice(path_types)  # Randomly select a path type
-            car = DijkstraCar(path_type=path_type, start=start, end=end)
-            self.cars.append(car)
+        self.cars = []
+        for _ in range(500):
+            self.cars.append(DijkstraCar(A, H, PathType.FASTEST))
+        self.intersections = [A, B, C, D, E, F, G, H]
+        self.roads = [AB, AC, AD, BE, BF, BG, CE, CF, CG, DE, DF, DG, EH, FH, GH]
 
 
     def __create_default_map(self):
@@ -76,30 +78,41 @@ class Map:
         D = Intersection(label="D")
         E = Intersection(label="E")
         F = Intersection(label="F")
+        G = Intersection(label="G")
+        H = Intersection(label="H")
 
         # Create roads
-        AB = Road(speed_limit=50, label="AB")
+        AB = Road(speed_limit=15, label="AB")
         AC = Road(speed_limit=40, label="AC")
-        BC = Road(speed_limit=30, label="BC")
-        BD = Road(speed_limit=55, label="BD")
-        CD = Road(speed_limit=35, label="CD")
-        CE = Road(speed_limit=60, label="CE")
-        DF = Road(speed_limit=50, label="DF")
-        EF = Road(speed_limit=45, label="EF")
+        AD = Road(speed_limit=40, label="AD")
+        BE = Road(speed_limit=30, label="BE")
+        BF = Road(speed_limit=55, label="BF")
+        BG = Road(speed_limit=55, label="BG")
+        CE = Road(speed_limit=35, label="CE")
+        CF = Road(speed_limit=60, label="CF")
+        CG = Road(speed_limit=50, label="CG")
+        DE = Road(speed_limit=50, label="DE")
+        DF = Road(speed_limit=30, label="DF")
+        DG = Road(speed_limit=80, label="DG")
+        EH = Road(speed_limit=45, label="EH")
+        FH = Road(speed_limit=45, label="FH")
+        GH = Road(speed_limit=45, label="GH")
 
         # Add roads to intersections
-        A.add_road((AB, B), (AC, C))
-        B.add_road((AB, A), (BC, C), (BD, D))
-        C.add_road((AC, A), (BC, B), (CD, D), (CE, E))
-        D.add_road((BD, B), (CD, C), (DF, F))
-        E.add_road((CE, C), (EF, F))
-        F.add_road((DF, D), (EF, E))
+        A.add_road((AB, B), (AC, C), (AD, D))
+        B.add_road((AB, A), (BE, E), (BF, F), (BG, G))
+        C.add_road((AC, A), (CE, E), (CF, F), (CG, G))
+        D.add_road((AD, A), (DE, E), (DF, F), (DG, G))
+        E.add_road((BE, B), (CE, C), (DE, D), (EH, H))
+        F.add_road((BF, B), (CF, C), (DF, D), (FH, H))
+        G.add_road((BG, B), (CG, C), (DG, D), (GH, H))
+        H.add_road((EH, E), (FH, F), (GH, G))
 
         self.cars = []
         for _ in range(500):
-            self.cars.append(AgentCar(A, F))
-        self.intersections = [A, B, C, D, E, F]
-        self.roads = [AB, AC, BC, BD, CD, CE, DF, EF]
+            self.cars.append(AgentCar(A, H))
+        self.intersections = [A, B, C, D, E, F, G, H]
+        self.roads = [AB, AC, AD, BE, BF, BG, CE, CF, CG, DE, DF, DG, EH, FH, GH]
 
     def reset(self):
         for road in self.roads:
@@ -126,15 +139,14 @@ class Map:
             iterations += 1
         for car in self.cars:
             car.learn()
-        print(f"It took {iterations} iterations for all cars to reach their destination.")
 
     def simulate(self):
         self.iterate()
-        while not self.at_nash_equilibrium():
-        # for _ in range(500):
+        simulations = 0
+        while not self.at_nash_equilibrium() and simulations < 200:
             self.reset()
             self.iterate()
-        print()
+            simulations += 1
 
     def draw(self):
         G = nx.Graph()  # Create an empty graph
@@ -152,7 +164,7 @@ class Map:
                 G.add_edge(
                     inter1.label,
                     inter2.label,
-                    speed=road.get_speed(),
+                    speed=round(road.get_speed(), 2),
                     carsCount = road.traffic_count
                 )
 
@@ -172,45 +184,3 @@ class Map:
 
         plt.title("Map with Intersection and Road Information")
         plt.show()
-
-    def draw_path(self, path: list[Intersection]):
-        """
-        Draws the map and highlights the path provided.
-
-        :param path: A list of intersections forming the path to highlight.
-        """
-        G = nx.Graph()  # Create a new graph object for the map
-
-        # Add nodes (intersections)
-        for intersection in self.intersections:
-            G.add_node(intersection, label=intersection.label)
-
-        # Add edges (roads) between intersections
-        for inter1 in self.intersections:
-            for inter2 in inter1.get_connecting_intersections():
-                road = inter1.get_connecting_road(inter2)
-                G.add_edge(inter1, inter2, weight=road.length, label=f"Speed: {road.speed_limit}, Length: {road.length}, Cars:{road.traffic_count}")
-
-        # Create a list of edges that are part of the path
-        path_edges = []
-        for i in range(len(path) - 1):
-            path_edges.append((path[i], path[i + 1]))
-
-        # Draw the entire map
-        pos = nx.spring_layout(G)  # Positions for nodes
-        nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=500, font_size=10, font_weight='bold', edge_color='gray')
-
-        # Highlight the path in a different color
-        nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=2)
-
-        # Draw edge labels (road info)
-        edge_labels = nx.get_edge_attributes(G, 'label')
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
-
-        # Draw node labels (intersection labels)
-        node_labels = nx.get_node_attributes(G, 'label')
-        nx.draw_networkx_labels(G, pos, labels=node_labels, font_size=10, font_weight='bold')
-
-        plt.title("Map with Highlighted Path")
-        plt.show()
-
