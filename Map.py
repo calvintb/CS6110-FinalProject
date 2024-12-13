@@ -143,10 +143,12 @@ class Map:
     def simulate(self):
         self.iterate()
         simulations = 0
-        while not self.at_nash_equilibrium() and simulations < 200:
+        while not self.at_nash_equilibrium() and simulations < 100:
             self.reset()
             self.iterate()
             simulations += 1
+            if simulations == 1 or simulations == 10 or simulations == 20 or simulations == 50:
+                self.draw()
 
     def draw(self):
         G = nx.Graph()  # Create an empty graph
